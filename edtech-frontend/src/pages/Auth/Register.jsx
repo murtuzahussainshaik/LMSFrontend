@@ -35,6 +35,18 @@ const Register = () => {
       toast.error("Password must be at least 8 characters");
       return false;
     }
+    if (!/[A-Z]/.test(formData.password)) {
+      toast.error("Password must contain at least one uppercase letter");
+      return false;
+    }
+    if (!/[0-9]/.test(formData.password)) {
+      toast.error("Password must contain at least one number");
+      return false;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      toast.error("Password must contain at least one special character");
+      return false;
+    }
     return true;
   };
 
@@ -45,10 +57,9 @@ const Register = () => {
 
     try {
       setIsLoading(true);
-      // Remove confirmPassword before submitting
-      const { confirmPassword, ...registrationData } = formData;
-      console.log("Registering with role:", registrationData.role);
-      const response = await register(registrationData);
+      // Send all form data including confirmPassword
+      console.log("Registering with role:", formData.role);
+      const response = await register(formData);
       console.log("Registration response:", response);
       toast.success("Registration successful!");
       
